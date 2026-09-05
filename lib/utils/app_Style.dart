@@ -33,7 +33,7 @@ class AppStyle{
   );
     static TextStyle regular16Yellow=GoogleFonts.roboto(
     fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.bold,
     color: AppColors.yellowColor
 
   );
