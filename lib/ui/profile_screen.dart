@@ -8,10 +8,10 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenState extends State<ProfileScreen> {
   String userName = 'John Safwat';
   String userPhone = '01200000000';
   String userAvatar = '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar8.png';
@@ -210,5 +210,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
      );
   }
-  
+
 }

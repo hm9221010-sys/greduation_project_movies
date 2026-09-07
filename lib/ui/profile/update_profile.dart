@@ -17,10 +17,10 @@ class UpdateProfileScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+  State<UpdateProfileScreen> createState() => UpdateProfileScreenState();
 }
 
-class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+class UpdateProfileScreenState extends State<UpdateProfileScreen> {
   late TextEditingController nameController;
   late TextEditingController phoneController;
   late String selectedAvatar;
@@ -184,6 +184,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                  ),
       ),
     );
-    
+
   }
 }

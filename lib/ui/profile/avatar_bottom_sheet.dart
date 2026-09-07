@@ -8,10 +8,10 @@ class UpdateAvatar extends StatefulWidget {
   const UpdateAvatar({Key? key, required this.selectedAvatar}) : super(key: key);
 
   @override
-  State<UpdateAvatar> createState() => _UpdateAvatarState();
+  State<UpdateAvatar> createState() => UpdateAvatarState();
 }
 
-class _UpdateAvatarState extends State<UpdateAvatar> {
+class UpdateAvatarState extends State<UpdateAvatar> {
   final List<String> avatars = [
     '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar1.png',
     '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar2.png',
@@ -35,14 +35,14 @@ class _UpdateAvatarState extends State<UpdateAvatar> {
         vertical: height * 0.02,
       ),
       decoration: BoxDecoration(
-        color: AppColors.greyColor, // خلفية الـ Bottom Sheet
-        borderRadius: const BorderRadius.vertical(
+        color: AppColors.greyColor,
+        borderRadius: BorderRadius.vertical(
           top: Radius.circular(25),
         ),
       ),
       child: GridView.builder(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+        physics:  NeverScrollableScrollPhysics(),
         itemCount: avatars.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
@@ -58,9 +58,8 @@ class _UpdateAvatarState extends State<UpdateAvatar> {
               Navigator.pop(context, avatars[index]);
             },
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding:  EdgeInsets.all(8),
               decoration: BoxDecoration(
-                // تغيير لون الخلفية بالكامل للأصفر إذا كانت الصورة مختارة
                 color: isSelected ? AppColors.yellowColor : AppColors.blackColor.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
@@ -74,10 +73,10 @@ class _UpdateAvatarState extends State<UpdateAvatar> {
                   avatars[index],
                   fit: BoxFit.contain,
                 ),
-              ),
+                ),
             ),
           );
-        },
+      },
       ),
     );
   }
