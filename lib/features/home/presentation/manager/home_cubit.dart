@@ -9,13 +9,27 @@ class HomeCubit extends Cubit<HomeState> {
 
   void fetchMovies() async {
     emit(HomeLoading());
+
     try {
       final movies = await apiService.getMovies();
 
-      movies.sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
-      emit(HomeLoaded(movies));
+      movies.sort(
+            (a, b) => b.releaseDate.compareTo(a.releaseDate),
+      );
+
+      emit(
+        HomeLoaded(
+          movies,
+          movies,
+          'Action',
+        ),
+      );
     } catch (e) {
-      emit(HomeError(e.toString()));
+      emit(
+        HomeError(
+          e.toString(),
+        ),
+      );
     }
   }
 }

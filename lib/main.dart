@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'features/home/presentation/views/main_view.dart';
 import 'l10n/app_localizations.dart';
@@ -24,36 +25,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LanguageCubit, Locale>(
-      builder: (context, locale) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
+    return ScreenUtilInit(
+      designSize: const Size(430, 932),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return BlocBuilder<LanguageCubit, Locale>(
+          builder: (context, locale) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
 
-          locale: locale,
+              locale: locale,
 
-          localizationsDelegates:
-          AppLocalizations.localizationsDelegates,
+              localizationsDelegates:
+              AppLocalizations.localizationsDelegates,
 
-          supportedLocales:
-          AppLocalizations.supportedLocales,
+              supportedLocales:
+              AppLocalizations.supportedLocales,
 
-          initialRoute: RouteName.onboardingRoute,
+              initialRoute: RouteName.onboardingRoute,
 
-          routes: {
-            RouteName.onboardingRoute: (context) =>
-            const OnboardingScreen(),
+              routes: {
+                RouteName.onboardingRoute: (context) =>
+                const OnboardingScreen(),
 
-            RouteName.loginRoute: (context) =>
-                LoginScreen(),
+                RouteName.loginRoute: (context) =>
+                 LoginScreen(),
 
-            RouteName.forgetPasswordRoute: (context) =>
-            const ForgetPasswordScreen(),
+                RouteName.forgetPasswordRoute: (context) =>
+                const ForgetPasswordScreen(),
 
-            RouteName.registerRoute: (context) =>
-            const RegisterScreen(),
+                RouteName.registerRoute: (context) =>
+                const RegisterScreen(),
 
-            RouteName.homeRoute: (context) =>
-            const MainView(),
+                RouteName.homeRoute: (context) =>
+                const MainView(),
+              },
+            );
           },
         );
       },

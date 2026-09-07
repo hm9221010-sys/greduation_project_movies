@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../data/services/api_service.dart';
-import '../manager/home_cubit.dart';
+import '../manager/home_bloc.dart';
+import '../manager/home_event.dart';
 import '../manager/home_state.dart';
 import '../widgets/available_now_slider.dart';
 import '../widgets/movie_card.dart';
+import '../../../search/presentation/views/search_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -18,240 +21,327 @@ class _MainViewState extends State<MainView> {
   int _selectedIndex = 0;
   int _currentMovieIndex = 0;
 
-  final List<String> _categories = [
-    'Action',
-    'Adventure',
-    'Animation',
-    'Comedy',
-    'Crime',
-    'Drama',
-    'Horror',
-    'Romance',
-    'Science Fiction',
-    'Thriller',
-  ];
-
-  int _currentCategoryIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    // ربط الـ Cubit وتوفيره للشاشة بالكامل ونطق fetchMovies لجلب الداتا
-    return BlocProvider(
-      create: (context) => HomeCubit(ApiService())..fetchMovies(),
-      child: Scaffold(
-        backgroundColor: const Color(0xFF121312),
-        body: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            // 1. حالة التحميل
-            if (state is HomeLoading) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.amber),
-              );
-            }
-            // 2. حالة نجاح جلب الداتا
-            else if (state is HomeLoaded) {
-              final movies = state.movies;
-              final List<String> sortedPosters = movies.map((m) => m.posterUrl).toList();
-              final String currentCategoryName = _categories[_currentCategoryIndex];
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.noScaling,
+      ),
+      child: BlocProvider(
+        create: (context) => HomeBloc(ApiService())..add(FetchMoviesEvent()),
+        child: Builder(
+          builder: (context) {
+            return Scaffold(
+              backgroundColor: const Color(0xFF121312),
+              body: IndexedStack(
+                index: _selectedIndex,
+                children: [
+                  SafeArea(
+                    child: BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        if (state is HomeLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.amber,
+                            ),
+                          );
+                        }
 
-              return SafeArea(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 645,
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: sortedPosters.isNotEmpty
-                                  ? Image.network(
-                                sortedPosters[_currentMovieIndex < sortedPosters.length ? _currentMovieIndex : 0],
-                                fit: BoxFit.cover,
-                              )
-                                  : Container(color: const Color(0xFF1C1D1C)),
-                            ),
-                            Positioned.fill(
-                              child: Container(
-                                color: const Color(0xFF121312).withValues(alpha: 0.82),
-                              ),
-                            ),
-                            Column(
+                        if (state is HomeLoaded) {
+                          final movies = state.movies;
+                          final categoryMovies = state.categoryMovies;
+                          final currentCategoryName = state.categoryName;
+
+                          final sortedPosters =
+                          movies.map((movie) => movie.posterUrl).toList();
+
+                          return SingleChildScrollView(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: 8),
-                                Center(
-                                  child: Image.asset(
-                                    'assets/images/available_now.png',
-                                    width: 260,
-                                    fit: BoxFit.contain,
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 645.h,
+                                  child: Stack(
+                                    clipBehavior: Clip.hardEdge,
+                                    children: [
+                                      Positioned.fill(
+                                        child: sortedPosters.isNotEmpty
+                                            ? Image.network(
+                                          sortedPosters[
+                                          _currentMovieIndex < sortedPosters.length
+                                              ? _currentMovieIndex
+                                              : 0
+                                          ],
+                                          fit: BoxFit.cover,
+                                        )
+                                            : Container(
+                                          color: const Color(0xFF1C1D1C),
+                                        ),
+                                      ),
+
+                                      Positioned.fill(
+                                        child: Container(
+                                          color: const Color(0xFF121312)
+                                              .withValues(alpha: 0.82),
+                                        ),
+                                      ),
+
+                                      Positioned(
+                                        top: 7.h,
+                                        left: 81.w,
+                                        child: Image.asset(
+                                          'assets/images/available_now.png',
+                                          width: 267.w,
+                                          height: 93.h,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+
+                                      if (sortedPosters.isNotEmpty)
+                                        Positioned(
+                                          top: 121.h,
+                                          left: 0,
+                                          right: 0,
+                                          child: AvailableNowSlider(
+                                            imageUrls: sortedPosters,
+                                            ratings: movies
+                                                .map((movie) => movie.rating)
+                                                .toList(),
+                                            onPageChanged: (index) {
+                                              setState(() {
+                                                _currentMovieIndex = index;
+                                              });
+                                            },
+                                          ),
+                                        ),
+
+                                      Positioned(
+                                        top: 493.h,
+                                        left: 38.w,
+                                        child: Image.asset(
+                                          'assets/images/watch_now.png',
+                                          width: 354.w,
+                                          height: 146.h,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(height: 6),
-                                AvailableNowSlider(
-                                  imageUrls: sortedPosters,
-                                  onPageChanged: (index) {
-                                    setState(() {
-                                      _currentMovieIndex = index;
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 10),
-                                Center(
-                                  child: Image.asset(
-                                    'assets/images/watch_now.png',
-                                    width: 310,
-                                    fit: BoxFit.contain,
+
+                                SizedBox(height: 10.h),
+
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 4.h,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            currentCategoryName,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          if (state.categoryLoading) ...[
+                                            SizedBox(width: 8.w),
+                                            SizedBox(
+                                              width: 14.w,
+                                              height: 14.w,
+                                              child: const CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: Colors.amber,
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'See More ',
+                                              style: TextStyle(
+                                                color: Colors.amber,
+                                                fontSize: 14.sp,
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.arrow_forward,
+                                              color: Colors.amber,
+                                              size: 16.sp,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+
+                                SizedBox(
+                                  height: 220.h,
+                                  child: categoryMovies.isEmpty
+                                      ? Center(
+                                    child: Text(
+                                      'No movies found in this category',
+                                      style: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 14.sp,
+                                      ),
+                                    ),
+                                  )
+                                      : ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.only(left: 16.w),
+                                    itemCount: categoryMovies.length,
+                                    itemBuilder: (context, index) {
+                                      return MovieCard(
+                                        imageUrl:
+                                        categoryMovies[index].posterUrl,
+                                        rating:
+                                        categoryMovies[index].rating,
+                                      );
+                                    },
+                                  ),
+                                ),
+
+                                SizedBox(height: 100.h),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
+                          );
+                        }
 
-                      const SizedBox(height: 10),
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              currentCategoryName,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        if (state is HomeError) {
+                          return SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.w),
+                                  child: Text(
+                                    'Error: ${state.message}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                               ),
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Row(
-                                children: [
-                                  Text('See More ', style: TextStyle(color: Colors.amber)),
-                                  Icon(Icons.arrow_forward, color: Colors.amber, size: 16),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          );
+                        }
 
-                      SizedBox(
-                        height: 220,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.only(left: 16),
-                          itemCount: movies.length,
-                          itemBuilder: (context, index) {
-                            return MovieCard(
-                              imageUrl: movies[index].posterUrl,
-                              rating: movies[index].rating,
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 100),
-                    ],
+                        return const SizedBox();
+                      },
+                    ),
                   ),
-                ),
-              );
-            }
-            // 3. حالة الخطأ
-            else if (state is HomeError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Error: ${state.message}',
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
 
-            return const SizedBox();
+                  const SearchView(),
+
+                  Center(
+                    child: Text(
+                      'Explore',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                  ),
+
+                  Center(
+                    child: Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              bottomNavigationBar: Container(
+                height: 61.h,
+                margin: EdgeInsets.only(
+                  left: 9.w,
+                  right: 9.w,
+                  bottom: 9.h,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF282A28).withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildNavItem(
+                      context: context,
+                      index: 0,
+                      assetPath: 'assets/icons/home.svg',
+                    ),
+                    _buildNavItem(
+                      context: context,
+                      index: 1,
+                      assetPath: 'assets/icons/search.svg',
+                    ),
+                    _buildNavItem(
+                      context: context,
+                      index: 2,
+                      assetPath: 'assets/icons/explore.svg',
+                    ),
+                    _buildNavItem(
+                      context: context,
+                      index: 3,
+                      assetPath: 'assets/icons/profile.svg',
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         ),
-        bottomNavigationBar: Container(
-          height: 61,
-          margin: const EdgeInsets.only(left: 9, right: 9, bottom: 9),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-          decoration: BoxDecoration(
-            color: const Color(0xFF282A28).withValues(alpha: 0.9),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              onTap: (index) {
-                setState(() {
-                  _selectedIndex = index;
+      ),
+    );
+  }
 
-                  if (index == 0) {
-                    _currentCategoryIndex = (_currentCategoryIndex + 1) % _categories.length;
-                  }
-                });
-              },
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              type: BottomNavigationBarType.fixed,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              items: [
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/icons/home.svg',
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      _selectedIndex == 0 ? Colors.amber : Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/icons/search.svg',
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      _selectedIndex == 1 ? Colors.amber : Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/icons/explore.svg',
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      _selectedIndex == 2 ? Colors.amber : Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    'assets/icons/profile.svg',
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      _selectedIndex == 3 ? Colors.amber : Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: '',
-                ),
-              ],
+  Widget _buildNavItem({
+    required BuildContext context,
+    required int index,
+    required String assetPath,
+  }) {
+    final bool isSelected = _selectedIndex == index;
+
+    return Expanded(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          if (index == 0) {
+            context.read<HomeBloc>().add(NextCategoryEvent());
+          }
+        },
+        child: Center(
+          child: SvgPicture.asset(
+            assetPath,
+            width: 24.w,
+            height: 24.h,
+            colorFilter: ColorFilter.mode(
+              isSelected ? Colors.amber : Colors.white,
+              BlendMode.srcIn,
             ),
           ),
         ),
