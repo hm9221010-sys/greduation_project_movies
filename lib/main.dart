@@ -43,7 +43,8 @@ class MyApp extends StatelessWidget {
             RouteName.onboardingRoute: (context) =>
             const OnboardingScreen(),
 
-            RouteName.loginRoute: (context) => LoginScreen(),
+            RouteName.loginRoute: (context) =>
+                LoginScreen(),
 
             RouteName.forgetPasswordRoute: (context) =>
             const ForgetPasswordScreen(),
