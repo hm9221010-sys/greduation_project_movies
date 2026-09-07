@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/ui/screens/login/no_acc.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_size.dart';
+import '../../../l10n/app_localizations.dart';
 import '../login/CustomButton.dart';
 import '../login/custom_text_field.dart';
 import '../profile/avatar/avatar_picker.dart';
@@ -29,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isConfirmPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
+    final lang = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.blackColor,
       body: SafeArea(
@@ -53,19 +55,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: context.height * 0.01,),
                 CustomTextField(
-                  hintText: 'Name',
+                  hintText: lang.name,
                   prefixIcon: Icons.person,
                 ),
                 SizedBox(
                   height: context.height * 0.02,
                 ),
                 CustomTextField(
-                  hintText: 'Phone Number',
+                  hintText: lang.phoneNumber,
                   prefixIcon: Icons.phone,
                 ),
                 SizedBox(height: context.height * 0.02,),
                 CustomTextField(
-                  hintText: 'Email',
+                  hintText: lang.email,
                   prefixIcon: Icons.email,
                 ),
                 SizedBox(
@@ -73,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 CustomTextField(
-                  hintText: 'Password',
+                  hintText: lang.password,
                   prefixIcon: Icons.lock,
                   obscureText: !isPasswordVisible,
                   suffixIcon: IconButton(
@@ -95,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 CustomTextField(
-                  hintText: 'Confirm Password',
+                  hintText: lang.confirmPassword,
                   prefixIcon: Icons.lock,
                   obscureText: !isConfirmPasswordVisible,
                   suffixIcon: IconButton(
@@ -117,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 CustomButton(
-                  text: 'Create Account',
+                  text: lang.createAccount,
                   onPressed: () {
                     //todo Register logic
                   },
@@ -127,8 +129,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 noAccText(
-                  text: 'Already Have Account ? ',
-                  actionText: 'Login',
+                  text: lang.alreadyHaveAccount,
+                  actionText: lang.login,
                   onTap: () {
                     Navigator.pop(context);
                   },

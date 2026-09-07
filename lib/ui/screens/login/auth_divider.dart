@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/utils/app_Style.dart';
 import 'package:greduation_movies_fluter/utils/app_size.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_color.dart';
 
 class AuthDivider extends StatelessWidget {
@@ -8,6 +9,7 @@ class AuthDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = AppLocalizations.of(context)!;
     return Row(
       children: [
         const Expanded(
@@ -22,7 +24,7 @@ class AuthDivider extends StatelessWidget {
             horizontal: context.width * 0.03,
           ),
           child: Text(
-            'OR',
+            lang.or,
             style: AppStyle.regular16Yellow,
           ),
         ),

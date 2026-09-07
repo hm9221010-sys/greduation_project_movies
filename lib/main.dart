@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:greduation_movies_fluter/ui/screens/forget_password/forget_password.dart';
-import 'package:greduation_movies_fluter/ui/screens/login/login_screen.dart';
-import 'package:greduation_movies_fluter/ui/screens/onboarding/onboarding_screen.dart';
-import 'package:greduation_movies_fluter/ui/screens/register/register_screen.dart';
-import 'package:greduation_movies_fluter/utils/route_name.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main(){
-  runApp(MyApp());
+import 'features/home/presentation/views/main_view.dart';
+import 'l10n/app_localizations.dart';
+import 'ui/screens/forget_password/forget_password.dart';
+import 'ui/screens/login/language/language_cubit.dart';
+import 'ui/screens/login/login_screen.dart';
+import 'ui/screens/onboarding/onboarding_screen.dart';
+import 'ui/screens/register/register_screen.dart';
+import 'utils/route_name.dart';
 
+void main() {
+  runApp(
+    BlocProvider(
+      create: (context) => LanguageCubit(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,16 +24,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: RouteName.onboardingRoute,
-      routes: {
-        RouteName.onboardingRoute: (context) => OnboardingScreen(),
-        RouteName.loginRoute:(context) => LoginScreen(),
-        RouteName.forgetPasswordRoute: (context) => ForgetPasswordScreen(),
-        RouteName.registerRoute: (context) => RegisterScreen(),
-      }
+    return BlocBuilder<LanguageCubit, Locale>(
+      builder: (context, locale) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
 
+          locale: locale,
+
+          localizationsDelegates:
+          AppLocalizations.localizationsDelegates,
+
+          supportedLocales:
+          AppLocalizations.supportedLocales,
+
+          initialRoute: RouteName.onboardingRoute,
+
+          routes: {
+            RouteName.onboardingRoute: (context) =>
+            const OnboardingScreen(),
+
+            RouteName.loginRoute: (context) => LoginScreen(),
+
+            RouteName.forgetPasswordRoute: (context) =>
+            const ForgetPasswordScreen(),
+
+            RouteName.registerRoute: (context) =>
+            const RegisterScreen(),
+
+            RouteName.homeRoute: (context) =>
+            const MainView(),
+          },
+        );
+      },
     );
   }
 }

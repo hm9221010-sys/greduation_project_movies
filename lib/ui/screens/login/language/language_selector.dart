@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:greduation_movies_fluter/utils/app_size.dart';
 import '../../../../utils/app_color.dart';
+import 'language_cubit.dart';
 
-class LanguageSelector extends StatefulWidget {
+class LanguageSelector extends StatelessWidget {
   const LanguageSelector({super.key});
 
   @override
-  State<LanguageSelector> createState() => _LanguageSelectorState();
-}
-
-class _LanguageSelectorState extends State<LanguageSelector> {
-  bool isEnglish = true;
-
-  @override
   Widget build(BuildContext context) {
+    final currentLocale = context.watch<LanguageCubit>().state;
+
+    final isEnglish = currentLocale.languageCode == 'en';
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: context.width * 0.015,
@@ -34,9 +32,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
         children: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                isEnglish = true;
-              });
+                context.read<LanguageCubit>().changeLanguage('en');
             },
             child: Container(
               padding: EdgeInsets.all(
@@ -63,9 +59,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
 
           GestureDetector(
             onTap: () {
-              setState(() {
-                isEnglish = false;
-              });
+              context.read<LanguageCubit>().changeLanguage('ar');
             },
             child: Container(
               padding: EdgeInsets.all(

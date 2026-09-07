@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../login/CustomButton.dart';
@@ -11,6 +12,7 @@ class ForgetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.blackColor,
       appBar: AppBar(
@@ -27,7 +29,7 @@ class ForgetPasswordScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Forget Password',
+          lang.forgetPassword,
           style: AppStyle.bold20Date.copyWith(
             color: AppColors.yellowColor,
           ),
@@ -54,7 +56,7 @@ class ForgetPasswordScreen extends StatelessWidget {
               ),
 
               CustomTextField(
-                hintText: 'Email',
+                hintText: lang.email,
                 prefixIcon: Icons.email,
               ),
               SizedBox(
@@ -62,7 +64,7 @@ class ForgetPasswordScreen extends StatelessWidget {
               ),
 
               CustomButton(
-                text: 'Verify Email',
+                text: lang.verifyEmail,
                 onPressed: () {
                   //todo Forget Password logic
                 },

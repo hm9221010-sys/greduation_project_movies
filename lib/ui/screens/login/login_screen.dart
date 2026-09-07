@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:greduation_movies_fluter/ui/screens/login/custom_text_field.dart';
 import 'package:greduation_movies_fluter/ui/screens/login/no_acc.dart';
 import 'package:greduation_movies_fluter/utils/app_color.dart';
-
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_Style.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/route_name.dart';
@@ -20,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     bool isPasswordVisible = false;
+    final lang = AppLocalizations.of(context)!;
     // TODO: implement build
     return Scaffold(
       backgroundColor: AppColors.blackColor,
@@ -42,12 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
                ),
                SizedBox(height: context.height*0.08,),
                CustomTextField(
-                   hintText: 'Email',
+                   hintText: lang.email,
                    prefixIcon: Icons.email
                ),
                SizedBox(height: context.height * 0.03,),
                CustomTextField(
-                 hintText: 'Password',
+                 hintText: lang.password,
                  prefixIcon: Icons.lock,
                  obscureText: !isPasswordVisible,
                  suffixIcon: IconButton(
@@ -79,22 +79,26 @@ class _LoginScreenState extends State<LoginScreen> {
                      );
                    },
                    child: Text(
-                     ' Forgot Password?',
+                     lang.forgotPassword,
                      style: AppStyle.regular16Yellow,
                    ),
                  ),
                ),
                SizedBox(height: context.height * 0.025,),
                CustomButton(
-                 text: 'Login',
+                 text: AppLocalizations.of(context)!.login,
                  onPressed: () {
                    //todo Login logic
+                   Navigator.pushReplacementNamed(
+                     context,
+                     RouteName.homeRoute,
+                   );
                  },
                ),
                SizedBox(height: context.height * 0.025,),
                noAccText(
-                 text: "Don't Have Account ? ",
-                 actionText: 'Create One',
+                 text: lang.dontHaveAccount,
+                 actionText: lang.createOne,
                  onTap: () {
                    //todo Register Screen
                    Navigator.pushNamed(
@@ -108,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                SizedBox(height: context.height * 0.025,),
           
             CustomButton(
-              text: 'Login With Google',
+              text: lang.loginWithGoogle,
               icon: Icon(
                 Icons.g_mobiledata,
                 color: AppColors.blackColor,
