@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "162007386982",
+    "project_id": "graduationmovies",
+    "storage_bucket": "graduationmovies.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162007386982:android:ee9a9718d69e643cd596a7",
+        "android_client_info": {
+          "package_name": "com.example.greduation_movies_fluter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162007386982-1rnth4fom42kq238fev7sgqtiur74hsn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.greduation_movies_fluter",
+            "certificate_hash": "2c68bbf274e512898fa9147989ba450beb366c19"
+          }
+        },
+        {
+          "client_id": "162007386982-otplm717ro41um7lpv5imia0qevgir3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8megPprd23cVnHFDbPPRysJrSrQFx-8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162007386982-otplm717ro41um7lpv5imia0qevgir3q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "162007386982-o26pdv6ncd5ugm8eoss9vpl1ilrm8hqj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.greduationMoviesFluter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

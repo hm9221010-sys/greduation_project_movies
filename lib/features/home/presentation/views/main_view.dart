@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../ui/screens/profile/profile_screen.dart';
 import '../../data/services/api_service.dart';
 import '../manager/home_bloc.dart';
 import '../manager/home_event.dart';
@@ -204,11 +205,10 @@ class _MainViewState extends State<MainView> {
                                     padding: EdgeInsets.only(left: 16.w),
                                     itemCount: categoryMovies.length,
                                     itemBuilder: (context, index) {
+                                      final movie = categoryMovies[index];
+
                                       return MovieCard(
-                                        imageUrl:
-                                        categoryMovies[index].posterUrl,
-                                        rating:
-                                        categoryMovies[index].rating,
+                                        movie: movie,
                                       );
                                     },
                                   ),
@@ -258,16 +258,7 @@ class _MainViewState extends State<MainView> {
                       ),
                     ),
                   ),
-
-                  Center(
-                    child: Text(
-                      'Profile',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.sp,
-                      ),
-                    ),
-                  ),
+                  const ProfileScreen(),
                 ],
               ),
 

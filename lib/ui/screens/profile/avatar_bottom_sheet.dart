@@ -5,7 +5,10 @@ import 'package:greduation_movies_fluter/utils/app_size.dart';
 class UpdateAvatar extends StatefulWidget {
   final String selectedAvatar;
 
-  const UpdateAvatar({Key? key, required this.selectedAvatar}) : super(key: key);
+  const UpdateAvatar({
+    super.key,
+    required this.selectedAvatar,
+  });
 
   @override
   State<UpdateAvatar> createState() => _UpdateAvatarState();
@@ -13,30 +16,29 @@ class UpdateAvatar extends StatefulWidget {
 
 class _UpdateAvatarState extends State<UpdateAvatar> {
   final List<String> avatars = [
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar1.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar2.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar3.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar4.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar5.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar6.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar7.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar8.png',
-    '/Users/shawky/Desktop/greduation_movies_fluter/assets/images/avatar9.png',
+    'assets/images/avatars/avatar_1.png',
+    'assets/images/avatars/avatar_2.png',
+    'assets/images/avatars/avatar_3.png',
+    'assets/images/avatars/avatar_4.png',
+    'assets/images/avatars/avatar_5.png',
+    'assets/images/avatars/avatar_7.png',
+    'assets/images/avatars/avatar_8.png',
+    'assets/images/avatars/avatar_9.png',
   ];
 
   @override
   Widget build(BuildContext context) {
-    var height = context.height;
-    var width = context.width;
+    final height = context.height;
+    final width = context.width;
 
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: width * 0.04,
         vertical: height * 0.02,
       ),
-      decoration: BoxDecoration(
-        color: AppColors.greyColor, // خلفية الـ Bottom Sheet
-        borderRadius: const BorderRadius.vertical(
+      decoration: const BoxDecoration(
+        color: AppColors.greyColor,
+        borderRadius: BorderRadius.vertical(
           top: Radius.circular(25),
         ),
       ),
@@ -51,27 +53,40 @@ class _UpdateAvatarState extends State<UpdateAvatar> {
           childAspectRatio: 1,
         ),
         itemBuilder: (context, index) {
-          final isSelected = avatars[index] == widget.selectedAvatar;
+          final avatar = avatars[index];
+
+          final isSelected =
+              avatar == widget.selectedAvatar;
 
           return GestureDetector(
             onTap: () {
-              Navigator.pop(context, avatars[index]);
+              Navigator.pop(
+                context,
+                avatar,
+              );
             },
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                // تغيير لون الخلفية بالكامل للأصفر إذا كانت الصورة مختارة
-                color: isSelected ? AppColors.yellowColor : AppColors.blackColor.withOpacity(0.3),
+                color: isSelected
+                    ? AppColors.yellowColor
+                    : AppColors.blackColor.withValues(
+                  alpha: 0.3,
+                ),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: isSelected ? AppColors.yellowColor : AppColors.yellowColor.withOpacity(0.4),
+                  color: isSelected
+                      ? AppColors.yellowColor
+                      : AppColors.yellowColor.withValues(
+                    alpha: 0.4,
+                  ),
                   width: 1.5,
                 ),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                  avatars[index],
+                  avatar,
                   fit: BoxFit.contain,
                 ),
               ),

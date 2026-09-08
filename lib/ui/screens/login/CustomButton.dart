@@ -6,14 +6,20 @@ import '../../../utils/app_color.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget? icon;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final Widget? child;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.icon,
+    this.child,
+    this.backgroundColor = AppColors.yellowColor,
+    this.foregroundColor = AppColors.blackColor,
   });
 
   @override
@@ -24,32 +30,37 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.yellowColor,
-          foregroundColor: AppColors.blackColor,
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               context.width * 0.04,
             ),
           ),
         ),
-        child: icon == null
-            ? Text(
-          text,
-          style: AppStyle.semiBold20Black,
-        )
-            : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon!,
-            SizedBox(
-              width: context.width * 0.025,
-            ),
-            Text(
+        child: child ??
+            (icon == null
+                ? Text(
               text,
-              style: AppStyle.semiBold20Black,
-            ),
-          ],
-        ),
+              style: foregroundColor == AppColors.whiteColor
+                  ? AppStyle.regular20White
+                  : AppStyle.semiBold20Black,
+            )
+                : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                icon!,
+                SizedBox(
+                  width: context.width * 0.025,
+                ),
+                Text(
+                  text,
+                  style: foregroundColor == AppColors.whiteColor
+                      ? AppStyle.regular20White
+                      : AppStyle.semiBold20Black,
+                ),
+              ],
+            )),
       ),
     );
   }

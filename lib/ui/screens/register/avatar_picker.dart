@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../utils/app_color.dart';
-import '../../../../utils/app_size.dart';
+import '../../../utils/app_color.dart';
+import '../../../utils/app_size.dart';
 
 class AvatarPicker extends StatefulWidget {
   final List<String> avatars;
