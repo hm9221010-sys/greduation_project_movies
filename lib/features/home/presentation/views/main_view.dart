@@ -10,6 +10,7 @@ import '../manager/home_state.dart';
 import '../widgets/available_now_slider.dart';
 import '../widgets/movie_card.dart';
 import '../../../search/presentation/views/search_view.dart';
+import 'explore_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -249,15 +250,8 @@ class _MainViewState extends State<MainView> {
 
                   const SearchView(),
 
-                  Center(
-                    child: Text(
-                      'Explore',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.sp,
-                      ),
-                    ),
-                  ),
+                  const ExploreView(),
+                  
                   const ProfileScreen(),
                 ],
               ),

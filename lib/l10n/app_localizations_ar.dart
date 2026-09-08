@@ -154,4 +154,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get loginAgainToDeleteAccount =>
       'من فضلك سجل الدخول مرة أخرى قبل حذف حسابك';
+
+  @override
+  String get browse => 'تصفح';
+
+  @override
+  String get noMoviesFound => 'لا توجد أفلام';
 }

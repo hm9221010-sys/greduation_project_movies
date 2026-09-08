@@ -46,5 +46,6 @@
   "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
   "deleteAccountConfirmation": "هل أنت متأكد أنك تريد حذف حسابك؟",
   "cancel": "إلغاء",
-  "loginAgainToDeleteAccount": "من فضلك سجل الدخول مرة أخرى قبل حذف حسابك"
+  "loginAgainToDeleteAccount": "من فضلك سجل الدخول مرة أخرى قبل حذف حسابك",
+  "noMoviesFound": "لا توجد أفلام"
 }

@@ -153,4 +153,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loginAgainToDeleteAccount =>
       'Please login again before deleting your account';
+
+  @override
+  String get browse => 'Browse';
+
+  @override
+  String get noMoviesFound => 'No movies found';
 }

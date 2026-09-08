@@ -46,5 +46,6 @@
   "profileUpdatedSuccessfully": "Profile updated successfully",
   "deleteAccountConfirmation": "Are you sure you want to delete your account?",
   "cancel": "Cancel",
-  "loginAgainToDeleteAccount": "Please login again before deleting your account"
+  "loginAgainToDeleteAccount": "Please login again before deleting your account",
+  "noMoviesFound": "No movies found"
 }
