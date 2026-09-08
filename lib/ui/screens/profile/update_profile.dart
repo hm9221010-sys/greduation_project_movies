@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/l10n/app_localizations.dart';
 import 'package:greduation_movies_fluter/ui/screens/profile/avatar_bottom_sheet.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 import 'package:greduation_movies_fluter/utils/app_color.dart';
 import 'package:greduation_movies_fluter/utils/app_size.dart';
 
 import '../../../firebase_utils.dart';
 import '../../../utils/route_name.dart';
-import '../login/CustomButton.dart';
+import '../login/custom_button.dart';
 import '../login/custom_text_field.dart';
 import 'components/delete_account.dart';
 import 'components/profile_avatar_picker.dart';
@@ -260,12 +260,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 final confirm =
                 await showDeleteAccountDialog(context);
 
+                if (!context.mounted) return;
+
                 if (!confirm) return;
 
                 try {
                   await FirebaseUtils.deleteAccount();
 
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
                   Navigator.pushNamedAndRemoveUntil(
                     context,
@@ -273,25 +275,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         (route) => false,
                   );
                 } on FirebaseAuthException catch (e) {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
-                  if (e.code == 'requires-recent-login') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          lang.loginAgainToDeleteAccount,
-                        ),
+                  final message =
+                  e.code == 'requires-recent-login'
+                      ? lang.loginAgainToDeleteAccount
+                      : lang.somethingWentWrong;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        message,
                       ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          lang.somethingWentWrong,
-                        ),
-                      ),
-                    );
-                  }
+                    ),
+                  );
                 }
               },
             ),

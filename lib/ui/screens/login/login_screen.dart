@@ -6,10 +6,10 @@ import 'package:greduation_movies_fluter/utils/app_color.dart';
 
 import '../../../firebase_utils.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/app_Style.dart';
+import '../../../utils/app_style.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/route_name.dart';
-import 'CustomButton.dart';
+import 'custom_button.dart';
 import 'auth_divider.dart';
 import 'language/language_selector.dart';
 
@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
 
                   //todo Register
-                  noAccText(
+                  NoAccText(
                     text: lang.dontHaveAccount,
                     actionText: lang.createOne,
                     onTap: () {
@@ -249,13 +249,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.blackColor,
                       size: context.width * 0.1,
                     ),
-                    onPressed: () async{
-                      // TODO: Google Sign-In
+                    onPressed: () async {
                       try {
-                        final userCredential =
-                            await FirebaseUtils.signInWithGoogle();
+                        await FirebaseUtils.signInWithGoogle();
 
-                        if (!mounted) return;
+                        if (!context.mounted) return;
 
                         Navigator.pushNamedAndRemoveUntil(
                           context,
@@ -263,13 +261,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               (route) => false,
                         );
                       } catch (e) {
-                        debugPrint('Google Sign-In Error: $e');
+                        debugPrint(
+                          'Google Sign-In Error: $e',
+                        );
 
-                        if (!mounted) return;
+                        if (!context.mounted) return;
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(e.toString()),
+                            content: Text(
+                              e.toString(),
+                            ),
                           ),
                         );
                       }

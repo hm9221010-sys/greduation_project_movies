@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 import 'package:greduation_movies_fluter/utils/app_color.dart';
 import '../../../../utils/app_size.dart';
 
@@ -73,8 +73,7 @@ class OnboardingPage extends StatelessWidget {
                     height: context.height * 0.025,
                   ),
 
-                  if (primaryButton != null)
-                    primaryButton!,
+                  ?primaryButton,
 
                   if (secondaryButton != null) ...[
                     SizedBox(

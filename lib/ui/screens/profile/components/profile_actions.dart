@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/l10n/app_localizations.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 import 'package:greduation_movies_fluter/utils/app_color.dart';
 
 class ProfileActions extends StatelessWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 
-class noAccText extends StatelessWidget {
+class NoAccText extends StatelessWidget {
   final String text;
   final String actionText;
   final VoidCallback onTap;
 
-  const noAccText({
+  const NoAccText({
     super.key,
     required this.text,
     required this.actionText,

@@ -6,7 +6,7 @@ import '../../../../utils/app_color.dart';
 import '../../../firebase_utils.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/route_name.dart';
-import '../login/CustomButton.dart';
+import '../login/custom_button.dart';
 import '../login/custom_text_field.dart';
 import 'avatar_picker.dart';
 
@@ -282,7 +282,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
 
-                  noAccText(
+                  NoAccText(
                     text: lang.alreadyHaveAccount,
                     actionText: lang.login,
                     onTap: () {

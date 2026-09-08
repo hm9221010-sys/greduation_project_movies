@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/l10n/app_localizations.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 import 'package:greduation_movies_fluter/utils/app_color.dart';
+import 'history_tab.dart';
+import 'watch_list_tab.dart';
 
 class ProfileTabs extends StatelessWidget {
   const ProfileTabs({
@@ -46,8 +48,9 @@ class ProfileTabs extends StatelessWidget {
             color: AppColors.blackColor,
             child: TabBarView(
               children: [
-                _emptyTab(),
-                _emptyTab(),
+                //todo History
+                const WatchListTab(),
+                HistoryTab()
               ],
             ),
           ),
@@ -56,11 +59,4 @@ class ProfileTabs extends StatelessWidget {
     );
   }
 
-  Widget _emptyTab() {
-    return Center(
-      child: Image.asset(
-        'assets/images/iconProfile.png',
-      ),
-    );
-  }
 }

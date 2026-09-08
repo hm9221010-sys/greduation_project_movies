@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:greduation_movies_fluter/ui/screens/profile/update_profile.dart';
 import 'package:greduation_movies_fluter/utils/app_color.dart';
 import 'package:greduation_movies_fluter/utils/app_size.dart';
 import '../../../features/favorites/services/favorite_service.dart';
+import '../../../features/favorites/services/history_service.dart';
 import '../../../firebase_utils.dart';
 import '../../../utils/route_name.dart';
 import 'components/profile_actions.dart';
@@ -21,12 +24,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
   String userPhone = '';
-  String userAvatar = 'assets/images/avatars/avatar_1.png';
+  String userAvatar =
+      'assets/images/avatars/avatar_1.png';
 
   bool isLoading = true;
 
   int wishListCount = 0;
   int historyCount = 0;
+
+  StreamSubscription<
+      QuerySnapshot<Map<String, dynamic>>>?
+  favoritesSubscription;
 
   @override
   void initState() {
@@ -34,23 +42,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     getUserData();
     listenToFavorites();
+    listenToHistory();
   }
 
   void listenToFavorites() {
-    FavoriteService.getFavorites().listen(
-          (snapshot) {
-        if (!mounted) return;
+    favoritesSubscription =
+        FavoriteService.getFavorites().listen(
+              (snapshot) {
+            if (!mounted) return;
 
-        setState(() {
-          wishListCount = snapshot.docs.length;
-        });
-      },
-      onError: (error) {
-        debugPrint(
-          'Favorites Error: $error',
+            setState(() {
+              wishListCount = snapshot.docs.length;
+            });
+
+            debugPrint(
+              'Favorites Count: ${snapshot.docs.length}',
+            );
+          },
+          onError: (error) {
+            debugPrint(
+              'Favorites Error: $error',
+            );
+          },
         );
-      },
-    );
   }
 
   Future<void> getUserData() async {
@@ -62,23 +76,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       final data = document.data();
 
-      if (data != null) {
-        setState(() {
-          userName = data['name'] ?? '';
+      setState(() {
+        userName = data?['name'] ?? '';
+        userPhone = data?['phone'] ?? '';
+        userAvatar =
+            data?['avatar'] ??
+                'assets/images/avatars/avatar_1.png';
 
-          userPhone = data['phone'] ?? '';
-
-          userAvatar =
-              data['avatar'] ??
-                  'assets/images/avatars/avatar_1.png';
-
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-      }
+        isLoading = false;
+      });
     } catch (e) {
       if (!mounted) return;
 
@@ -93,14 +99,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void dispose() {
+    favoritesSubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = context.height;
     final width = context.width;
 
     if (isLoading) {
       return const Scaffold(
-        backgroundColor:
-        AppColors.profileColor,
+        backgroundColor: AppColors.profileColor,
         body: Center(
           child: CircularProgressIndicator(
             color: AppColors.yellowColor,
@@ -123,10 +134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               //todo Profile Header
               Padding(
-                padding:
-                EdgeInsets.symmetric(
-                  horizontal:
-                  width * 0.024,
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.024,
                 ),
                 child: ProfileHeader(
                   userName: userName,
@@ -144,18 +153,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               //todo Edit Profile + Exit
               Padding(
-                padding:
-                EdgeInsets.symmetric(
-                  horizontal:
-                  width * 0.032,
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.032,
                 ),
                 child: ProfileActions(
-                  onEditProfile:
-                      () async {
+                  onEditProfile: () async {
                     final updatedData =
                     await Navigator.push<
-                        Map<String,
-                            dynamic>>(
+                        Map<String, dynamic>>(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
@@ -170,32 +175,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     );
 
-                    if (updatedData !=
-                        null) {
+                    if (updatedData != null) {
                       setState(() {
                         userName =
-                        updatedData[
-                        'name'];
+                        updatedData['name'];
 
                         userPhone =
-                        updatedData[
-                        'phone'];
+                        updatedData['phone'];
 
                         userAvatar =
-                        updatedData[
-                        'avatar'];
+                        updatedData['avatar'];
                       });
                     }
                   },
-
+                  //todo logout
                   onExit: () async {
-                    await FirebaseUtils
-                        .logout();
+                    await FirebaseUtils.logout();
 
-                    if (!mounted) return;
+                    if (!context.mounted) return;
 
-                    Navigator
-                        .pushNamedAndRemoveUntil(
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
                       RouteName.loginRoute,
                           (route) => false,
@@ -216,6 +215,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+  void listenToHistory() {
+    HistoryService.getHistory().listen(
+          (snapshot) {
+        if (!mounted) return;
+
+        setState(() {
+          historyCount = snapshot.docs.length;
+        });
+      },
+      onError: (error) {
+        debugPrint(
+          'History Error: $error',
+        );
+      },
     );
   }
 }

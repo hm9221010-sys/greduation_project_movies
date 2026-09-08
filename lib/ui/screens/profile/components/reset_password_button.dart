@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 
 class ResetPasswordButton extends StatelessWidget {
   final String text;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 import 'package:greduation_movies_fluter/utils/app_size.dart';
-
 import '../../../utils/app_color.dart';
 
 class CustomButton extends StatelessWidget {

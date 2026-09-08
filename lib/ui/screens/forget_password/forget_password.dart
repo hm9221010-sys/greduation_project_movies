@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:greduation_movies_fluter/utils/app_Style.dart';
+import 'package:greduation_movies_fluter/utils/app_style.dart';
 import '../../../firebase_utils.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../login/CustomButton.dart';
+import '../login/custom_button.dart';
 import '../login/custom_text_field.dart';
 import '../login/language/language_selector.dart';
 
